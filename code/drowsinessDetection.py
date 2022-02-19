@@ -3,14 +3,20 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from keras.models import load_model
 import numpy as np
+from pygame import mixer
 import time
 
-#sound = mixer.Sound('alarm.wav')
+mixer.init()
+sound = mixer.Sound('alarm.wav')
+
 face = cv2.CascadeClassifier('haar cascade files/haarcascade_frontalface_alt.xml')
 leye = cv2.CascadeClassifier('haar cascade files/haarcascade_lefteye_2splits.xml')
 reye = cv2.CascadeClassifier('haar cascade files/haarcascade_righteye_2splits.xml')
+
 lbl=['Close','Open']
+
 model = load_model('models/cnnCat2.h5')
+
 path = os.getcwd()
 cap = cv2.VideoCapture(1, cv2.CAP_DSHOW) #cv2.VideoCapture('ejemplo2.mp4')
 font = cv2.FONT_HERSHEY_COMPLEX_SMALL
@@ -19,6 +25,7 @@ score=0
 thicc=2
 rpred=[99]
 lpred=[99]
+
 while True:
     ret, frame = cap.read()
     height,width = frame.shape[:2]
@@ -39,6 +46,7 @@ while True:
         r_eye = np.expand_dims(r_eye,axis=0)
         rpred = model.predict(r_eye)[0]
         #print(round(rpred[0]))
+
         if(round(rpred[0])==1):
             lbl='Open'
         if(round(rpred[0])==0):
@@ -73,6 +81,11 @@ while True:
     if(score>15):
         #person is feeling sleepy so we beep the alarm
         cv2.imwrite(os.path.join(path,'image.jpg'),frame)
+        try:
+            sound.play()
+            
+        except:  # isplaying = False
+            pass
         
         if(thicc<16):
             thicc= thicc+2
