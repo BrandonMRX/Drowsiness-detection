@@ -15,8 +15,8 @@ def generator(dir, gen=image.ImageDataGenerator(rescale=1./255), shuffle=True,ba
 
 BS= 32
 TS=(24,24)
-train_batch= generator('data/train',shuffle=True, batch_size=BS,target_size=TS)
-valid_batch= generator('data/valid',shuffle=True, batch_size=BS,target_size=TS)
+train_batch= generator('../data/train',shuffle=True, batch_size=BS,target_size=TS)
+valid_batch= generator('../data/valid',shuffle=True, batch_size=BS,target_size=TS)
 SPE= len(train_batch.classes)//BS
 VS = len(valid_batch.classes)//BS
 print(SPE,VS)
