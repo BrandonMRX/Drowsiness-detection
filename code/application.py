@@ -14,7 +14,8 @@ import time
 
 st.title("Drowsiness Detection")
 
-
+mixer.init()
+sound = mixer.Sound("alarm.wav")
 # st.image(image_data)
 
 
