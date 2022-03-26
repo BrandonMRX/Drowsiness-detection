@@ -1,4 +1,5 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from keras.preprocessing import image
 import matplotlib.pyplot as plt 
 import numpy as np
@@ -13,13 +14,25 @@ def generator(dir, gen=image.ImageDataGenerator(rescale=1./255), shuffle=True,ba
 
     return gen.flow_from_directory(dir,batch_size=batch_size,shuffle=shuffle,color_mode='grayscale',class_mode=class_mode,target_size=target_size)
 
-BS= 32
-TS=(24,24)
-train_batch= generator('../data/train',shuffle=True, batch_size=BS,target_size=TS)
-valid_batch= generator('../data/valid',shuffle=True, batch_size=BS,target_size=TS)
-SPE= len(train_batch.classes)//BS
-VS = len(valid_batch.classes)//BS
-print(SPE,VS)
+batchSize= 32
+testSteps=(24,24)
+
+train_batch= generator('data/train',shuffle=True, batch_size=batchSize,target_size=testSteps)
+valid_batch= generator('data/test',shuffle=True, batch_size=batchSize,target_size=testSteps)
+print(train_batch.target_size)
+print(valid_batch.target_size)
+
+
+# you should reshape your labels as 2d-tensor
+# the first dimension will be the batch dimension and the second the scalar label)
+
+#train_batch = np.asarray(train_batch).astype('float32').reshape((-1,1))
+#valid_batch = np.asarray(valid_batch).astype('float32').reshape((-1,1))
+
+
+stepsPerEpoch= len(train_batch.classes)//batchSize
+validSteps = len(valid_batch.classes)//batchSize
+print(stepsPerEpoch,validSteps)
 
 
 # img,labels= next(train_batch)
@@ -52,6 +65,6 @@ model = Sequential([
 
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
-model.fit_generator(train_batch, validation_data=valid_batch,epochs=15,steps_per_epoch=SPE ,validation_steps=VS)
+model.fit(train_batch, validation_data=valid_batch,epochs=15,steps_per_epoch=stepsPerEpoch ,validation_steps=validSteps)
 
-model.save('models/cnnCat2.h5', overwrite=True)
+#model.save('models/cnnCat3.h5', overwrite=True)
