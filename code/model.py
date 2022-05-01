@@ -3,7 +3,7 @@ from keras.preprocessing import image
 import matplotlib.pyplot as plt
 import numpy as np
 from keras.utils.np_utils import to_categorical
-import random, shutil
+
 from keras.models import Sequential
 from keras.layers import (
     Dropout,
@@ -74,12 +74,22 @@ model = Sequential(
 
 model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
 
-model.fit(
+history = model.fit(
     train_batch,
     validation_data=valid_batch,
-    epochs=200,
+    epochs=250,
     steps_per_epoch=SPE,
     validation_steps=VS,
 )
 
 model.save("models/cnnCat7.h5", overwrite=True)
+
+plt.figure(0)
+plt.plot(history.history["accuracy"], label="Accuracy")
+plt.plot(history.history["val_accuracy"], label="Val Accuracy")
+plt.title("Accuracy")
+plt.xlabel("epochs")
+plt.ylabel("accuracy")
+plt.legend()
+plt.savefig("grafic.png")
+plt.show()

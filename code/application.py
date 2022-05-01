@@ -14,6 +14,10 @@ import time
 
 st.title("Drowsiness Detection")
 
+st.text(
+    "This proyect contain some models with different accuracy from which\nyou can choose to Detect Drowsiness with the camera conected."
+)
+
 mixer.init()
 sound = mixer.Sound("alarm.wav")
 # st.image(image_data)
@@ -30,11 +34,12 @@ path = os.getcwd()
 class VideoProcessor:
     score = 0
     option = st.selectbox(
-        "Choose the model to use", ("", "./models/cnnCat2.h5", "./models/first_try.h5")
+        "Choose the model to use",
+        ("", "cnnCat2.h5", "cnnCat3.h5", "cnnCat7.h5"),
     )
 
     def recv(self, frame):
-        model = load_model(self.option)
+        model = load_model("./models/" + self.option)
         font = cv2.FONT_HERSHEY_COMPLEX_SMALL
         count = 0
 
@@ -150,3 +155,4 @@ webrtc_streamer(
         {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
     ),
 )
+st.subheader("Created by Carlos Garcia Lezcano")
