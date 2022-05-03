@@ -77,12 +77,12 @@ model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accur
 history = model.fit(
     train_batch,
     validation_data=valid_batch,
-    epochs=250,
+    epochs=20,
     steps_per_epoch=SPE,
     validation_steps=VS,
 )
 
-model.save("models/cnnCat7.h5", overwrite=True)
+model.save("models/cnnCat3.h5", overwrite=True)
 
 plt.figure(0)
 plt.plot(history.history["accuracy"], label="Accuracy")
