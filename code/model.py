@@ -23,8 +23,12 @@ def generator(
     batch_size=1,
     target_size=(24, 24),
     class_mode="categorical",
-):
-
+):  # Target size => tamaño de las imagenes del data set
+    # class_mode => Serán etiquetas 2D codificadas con un solo disparo,
+    # batch_size => Tamaño de los lotes de datos
+    # shuffle => Si se barajan los datos (por defecto: True) Si se establece en False,
+    # ordena los datos en orden alfanumérico.
+    # dir => Localizacion del data set
     return gen.flow_from_directory(
         dir,
         batch_size=batch_size,
@@ -35,12 +39,16 @@ def generator(
     )
 
 
-BS = 32
-TS = (24, 24)
-train_batch = generator("data/train", shuffle=True, batch_size=BS, target_size=TS)
-valid_batch = generator("data/test", shuffle=True, batch_size=BS, target_size=TS)
-SPE = len(train_batch.classes) // BS
-VS = len(valid_batch.classes) // BS
+BATCH_SIZE = 32
+TARGET_SIZE = (24, 24)
+train_batch = generator(
+    "data/train", shuffle=True, batch_size=BATCH_SIZE, target_size=TARGET_SIZE
+)
+valid_batch = generator(
+    "data/test", shuffle=True, batch_size=BATCH_SIZE, target_size=TARGET_SIZE
+)
+SPE = len(train_batch.classes) // BATCH_SIZE
+VS = len(valid_batch.classes) // BATCH_SIZE
 print(SPE, VS)
 
 
@@ -83,6 +91,9 @@ history = model.fit(
 )
 
 model.save("models/cnnCat3.h5", overwrite=True)
+
+
+# Creacion de las graficas
 
 plt.figure(0)
 plt.plot(history.history["accuracy"], label="Accuracy")
