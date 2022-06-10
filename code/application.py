@@ -18,8 +18,8 @@ st.text(
     "This proyect contain some models with different accuracy from which\nyou can choose to Detect Drowsiness with the camera conected."
 )
 
-mixer.init()
-sound = mixer.Sound("alarm.wav")
+# mixer.init()
+# sound = mixer.Sound("alarm.wav")
 # st.image(image_data)
 
 
@@ -131,11 +131,11 @@ class VideoProcessor:
         if self.score > 55:
             # person is feeling sleepy so we beep the alarm
             cv2.imwrite(os.path.join(path, "image.jpg"), frm)
-            try:
-                sound.play()
+            #  try:
+            # sound.play()
 
-            except:  # isplaying = False
-                pass
+            # except:  # isplaying = False
+            #    pass
 
             if thicc < 3:
                 thicc = thicc + 2
