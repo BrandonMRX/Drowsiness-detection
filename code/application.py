@@ -12,7 +12,7 @@ from pygame import mixer
 import time
 
 
-st.title("Drowsiness Detection")
+st.title("SafeTrip")
 
 st.text(
     "This proyect contain some models with different accuracy from which\nyou can choose to Detect Drowsiness with the camera conected."
@@ -128,7 +128,7 @@ class VideoProcessor:
             1,
             cv2.LINE_AA,
         )
-        if self.score > 15:
+        if self.score > 55:
             # person is feeling sleepy so we beep the alarm
             cv2.imwrite(os.path.join(path, "image.jpg"), frm)
             try:
@@ -137,7 +137,7 @@ class VideoProcessor:
             except:  # isplaying = False
                 pass
 
-            if thicc < 16:
+            if thicc < 3:
                 thicc = thicc + 2
             else:
                 thicc = thicc - 2

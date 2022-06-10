@@ -18,3 +18,4 @@ Este repositorio esta compuesto por diferentes directorios y cuya estructura es 
 * `code/` : Código fuente del proyecto.
 * `haar cascade files/` : Archivos utilizados para el aprendizaje por conjuntos.
 * `models/`: Modelos utilizados.
+* `assets`: Graficas obtenidas de los modelos.

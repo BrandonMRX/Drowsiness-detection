@@ -8,6 +8,7 @@ from pygame import mixer
 import time
 
 mixer.init()
+
 sound = mixer.Sound("alarm.wav")
 
 face = cv2.CascadeClassifier("haar cascade files/haarcascade_frontalface_alt.xml")
@@ -16,7 +17,7 @@ reye = cv2.CascadeClassifier("haar cascade files/haarcascade_righteye_2splits.xm
 
 lbl = ["Close", "Open"]
 
-model = load_model("models/cnnCat2.h5")
+model = load_model("models/cnnCat8.h5")
 
 path = os.getcwd()
 cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)  # cv2.VideoCapture('ejemplo2.mp4')
@@ -39,6 +40,13 @@ while True:
     cv2.rectangle(
         frame, (0, height - 50), (200, height), (0, 0, 0), thickness=cv2.FILLED
     )
+    cv2.rectangle(
+        frame,
+        (width - 210, height - 50),
+        (width, height),
+        (0, 0, 0),
+        thickness=cv2.FILLED,
+    )
     for (x, y, w, h) in faces:
         cv2.rectangle(frame, (x, y), (x + w, y + h), (100, 100, 100), 1)
     for (x, y, w, h) in right_eye:
@@ -50,7 +58,6 @@ while True:
         r_eye = r_eye.reshape(24, 24, -1)
         r_eye = np.expand_dims(r_eye, axis=0)
         rpred = model.predict(r_eye)[0]
-        # print(round(rpred[0]))
 
         if round(rpred[0]) == 1:
             lbl = "Open"
@@ -78,7 +85,6 @@ while True:
         cv2.putText(
             frame, "Closed", (10, height - 20), font, 1, (255, 255, 255), 1, cv2.LINE_AA
         )
-    # if(rpred[0]==1 or lpred[0]==1):
     else:
         score = score - 1
         cv2.putText(
@@ -96,7 +102,17 @@ while True:
         1,
         cv2.LINE_AA,
     )
-    if score > 15:
+    cv2.putText(
+        frame,
+        "Press q to EXIT",
+        (width - 200, height - 20),
+        font,
+        1,
+        (255, 255, 255),
+        1,
+        cv2.LINE_AA,
+    )
+    if score > 5:
         # person is feeling sleepy so we beep the alarm
         cv2.imwrite(os.path.join(path, "image.jpg"), frame)
         try:
@@ -112,7 +128,7 @@ while True:
             if thicc < 2:
                 thicc = 2
         cv2.rectangle(frame, (0, 0), (width, height), (0, 0, 255), thicc)
-    cv2.imshow("Frame", frame)
+    cv2.imshow("SafeTrip", frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 

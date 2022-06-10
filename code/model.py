@@ -47,6 +47,7 @@ train_batch = generator(
 valid_batch = generator(
     "data/test", shuffle=True, batch_size=BATCH_SIZE, target_size=TARGET_SIZE
 )
+# print("hoalaa", train_batch)
 SPE = len(train_batch.classes) // BATCH_SIZE
 VS = len(valid_batch.classes) // BATCH_SIZE
 print(SPE, VS)
@@ -85,12 +86,12 @@ model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accur
 history = model.fit(
     train_batch,
     validation_data=valid_batch,
-    epochs=20,
+    epochs=150,
     steps_per_epoch=SPE,
     validation_steps=VS,
 )
 
-model.save("models/cnnCat3.h5", overwrite=True)
+model.save("models/cnnCat8.h5", overwrite=True)
 
 
 # Creacion de las graficas
@@ -114,3 +115,16 @@ plt.ylabel("loss")
 plt.legend()
 plt.savefig("grafic_loss.png")
 plt.show()
+
+
+# Confution Matrix
+# 2. División de datos en conjunto de evaluación y conjunto de entrenamiento
+from sklearn.model_selection import train_test_split
+
+
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+
+
+array = confusion_matrix(train_batch, valid_batch)
+print(array)
