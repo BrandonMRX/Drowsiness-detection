@@ -35,7 +35,7 @@ class VideoProcessor:
     score = 0
     option = st.selectbox(
         "Choose the model to use",
-        ("", "cnnCat2.h5", "cnnCat3.h5", "cnnCat7.h5"),
+        ("", "cnnCat2.h5", "cnnCat3.h5", "cnnCat8.h5"),
     )
 
     def recv(self, frame):
